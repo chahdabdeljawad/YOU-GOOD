@@ -1,0 +1,112 @@
+/* ===== GLOBAL STYLES ===== */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background: white;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 70px;
+  width: 100%;
+  background: white;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/* LEFT - Hamburger menu */
+.nav-left {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 24px;
+  width: 30px;
+}
+
+.nav-left span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #010101;
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* CENTER - Title under navbar */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  top: 500px;
+  transform: translateX(-50%);
+  padding: 80px 0;
+  text-align: center;
+  background: #fff;
+  font-size: 42px;
+  letter-spacing: 6px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* RIGHT - Search and profile */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* SEARCH */
+.search {
+  width: 200px;
+  height: 70px;
+  border: none;
+  border-bottom: 1px solid #111;
+  outline: none;
+  padding: 4px;
+  font-size: 25px;
+}
+
+/* PROFILE */
+.profile-pic {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown {
+  position: fixed;
+  top: 70px;
+  left: 40px;
+  background: rgb(254, 253, 253);
+  border: 1px solid #eee;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 300;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown a {
+  color: #111;
+  text-decoration: none;
+  letter-spacing: 2px;
+  font-size: 14px;
+  padding: 5px 0;
+  font-weight: 500;
+}
+
+/* Add some padding to main content */
+.main-content {
+  text-align: center;
+}

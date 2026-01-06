@@ -1,0 +1,74 @@
+/* Signin.css */
+
+div {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 28px;
+  color: #111;
+}
+
+label {
+  font-size: 20px;
+  color: #010101;
+  margin-bottom: 5px;
+  margin-top: 15px;
+}
+
+input {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  border-color: #000;
+}
+
+button {
+  margin-top: 25px;
+  padding: 14px 0;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+p {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #ff4d4f;
+  text-align: center;
+}
