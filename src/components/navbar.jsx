@@ -28,12 +28,6 @@ export default function Navbar() {
           )}
         </div>
       </nav>
-
-      {/* Main content area with titles */}
-      <div className="main-content">
-        <div className="nav-center">YOU GOOD</div>
-      </div>
-
       {/* Dropdown menu */}
       {open && (
         <div className="dropdown">
