@@ -72,3 +72,16 @@ p {
   color: #ff4d4f;
   text-align: center;
 }
+
+select {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+select:focus {
+  border-color: #000;
+}

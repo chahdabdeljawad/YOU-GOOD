@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import salonRoutes from "./routes/salons.js";
 import pool from "./db.js";
+import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use("/api", salonRoutes);
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
+
+app.use("/api/auth", authRoutes);
 
 // TEST DATABASE CONNECTION
 app.get("/test-db", async (req, res) => {

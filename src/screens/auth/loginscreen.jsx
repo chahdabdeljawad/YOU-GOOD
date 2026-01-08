@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../css/auth.css";
 
-function Login() {
+function Login({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -15,21 +17,41 @@ function Login() {
     }
 
     setError("");
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        setError(data.error);
+      } else {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setUser(data.user); // <-- now works
+        alert("Logged in successfully!");
+        navigate("/");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Server error, try again later");
+    }
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <h2>welcome again to YOU GOOD</h2>
-        <label>mail:</label>
+        <h2>Welcome back to YOU GOOD</h2>
+        <label>Email:</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label>password:</label>
+        <label>Password:</label>
         <input
           type="password"
           value={password}

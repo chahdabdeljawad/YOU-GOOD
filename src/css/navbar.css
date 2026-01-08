@@ -33,22 +33,6 @@
   transition: 0.3s;
 }
 
-/* CENTER - Title under navbar */
-.nav-center {
-  position: absolute;
-  left: 50%;
-  top: 500px;
-  transform: translateX(-50%);
-  padding: 50px 0;
-  text-align: center;
-  background: #fff;
-  font-size: 42px;
-  letter-spacing: 6px;
-  font-weight: 700;
-  color: #111;
-  margin-bottom: 50px;
-}
-
 /* RIGHT - Search and profile */
 .nav-right {
   display: flex;
@@ -101,4 +85,57 @@
 /* Add some padding to main content */
 .main-content {
   text-align: center;
+}
+
+/* PROFILE DROPDOWN */
+.profile-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #fff; /* same white theme */
+  border: 1px solid #eee;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 300;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  width: 180px;
+}
+
+.profile-pic-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #111;
+}
+
+.profile-name {
+  font-weight: 600;
+  color: #010101;
+  margin: 5px 0;
+}
+
+.profile-dropdown a {
+  color: #010101;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.profile-dropdown button {
+  width: 100%;
+  padding: 6px 0;
+  background: #010101;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
 }
