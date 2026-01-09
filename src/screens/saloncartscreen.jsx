@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
+import { Link } from "react-router-dom";
 import "../css/saloncartscreen.css";
 
 function SalonCartScreen() {
@@ -42,14 +43,19 @@ function SalonCartScreen() {
 
         <div className="salon-grid">
           {salons.map((salon) => (
-            <div key={salon.id} className="salon-card">
+            <Link
+              key={salon.id}
+              to={`/reservation/${salon.id}`}
+              className="salon-card"
+            >
               <img src={salon.image_url} alt={salon.name} />
               <h3>{salon.name}</h3>
               <p>{salon.city}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </main>
+      <Footer />
     </>
   );
 }

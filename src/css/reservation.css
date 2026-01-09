@@ -1,0 +1,148 @@
+/* PAGE */
+.reservation-page {
+  padding: 80px 60px;
+  background: #fff;
+  color: #111;
+  font-family: "Arial", sans-serif;
+}
+
+/* SALON INFO */
+.salon-info {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.salon-photo {
+  width: 400px;
+  height: 350px;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.salon-photo:hover {
+  filter: grayscale(0%);
+  transform: scale(1.02);
+}
+
+.salon-details h2 {
+  font-size: 36px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.salon-details p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.rating {
+  font-size: 20px;
+  color: #111;
+}
+
+/* SECTION TITLE */
+.section-title {
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin: 40px 0 20px;
+  text-align: center;
+}
+
+/* CATEGORIES GRID */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.category-card {
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.category-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.category-card.active img,
+.category-card:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+.category-card p {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* DATES AND TIMES GRID */
+.dates-grid,
+.times-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.date-btn,
+.time-btn {
+  padding: 12px 24px;
+  background: #111;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-btn.active,
+.time-btn.active,
+.date-btn:hover,
+.time-btn:hover {
+  background: #555;
+}
+
+/* CONFIRM BUTTON */
+.confirm-btn-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.confirm-btn {
+  padding: 18px 50px;
+  background: #111;
+  color: #fff;
+  font-size: 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.confirm-btn:hover {
+  background: #555;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .salon-info {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .salon-photo {
+    width: 100%;
+    height: 300px;
+  }
+}

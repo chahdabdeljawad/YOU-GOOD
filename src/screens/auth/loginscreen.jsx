@@ -30,8 +30,15 @@ function Login({ setUser }) {
       if (data.error) {
         setError(data.error);
       } else {
-        localStorage.setItem("user", JSON.stringify(data.user));
-        setUser(data.user); // <-- now works
+        // Add fallback photo if none exists
+        const loggedInUser = {
+          ...data.user,
+          photo:
+            data.user.photo || `https://i.pravatar.cc/150?u=${data.user.id}`,
+        };
+
+        localStorage.setItem("user", JSON.stringify(loggedInUser));
+        setUser(loggedInUser); // now profile picture works
         alert("Logged in successfully!");
         navigate("/");
       }

@@ -1,16 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/navbar.css";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false); // Hamburger menu
   const [profileMenu, setProfileMenu] = useState(false); // Profile dropdown
-  const [user, setUser] = useState(null); // logged in user
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  const profileRef = useRef(null);
+
+  // Load user from localStorage
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem("user"));
     if (savedUser) setUser(savedUser);
+  }, []);
+
+  // Close profile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
+        setProfileMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
@@ -22,11 +36,22 @@ export default function Navbar() {
 
   const isLoggedIn = !!user;
 
+  // Fallback profile picture
+  const profilePic = user
+    ? user.photo || `https://i.pravatar.cc/40?u=${user.id}`
+    : "";
+
   return (
     <>
       <nav className="navbar">
         {/* LEFT - Hamburger */}
-        <div className="nav-left" onClick={() => setOpenMenu(!openMenu)}>
+        <div
+          className="nav-left"
+          onClick={() => {
+            setOpenMenu(!openMenu);
+            setProfileMenu(false); // close profile menu
+          }}
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -37,22 +62,23 @@ export default function Navbar() {
           <input className="search" placeholder="Search" />
 
           {isLoggedIn && (
-            <div className="profile-wrapper">
-              <img
-                className="profile-pic"
-                src={user.photo || "https://i.pravatar.cc/40"}
-                alt="profile"
-                onClick={() => setProfileMenu(!profileMenu)}
-              />
+            <div
+              className="profile-wrapper"
+              ref={profileRef}
+              onClick={() => setProfileMenu(!profileMenu)}
+            >
+              {/* Profile image */}
+              <img className="profile-pic" src={profilePic} alt={user.name} />
 
+              {/* Dropdown */}
               {profileMenu && (
                 <div className="profile-dropdown">
                   <img
-                    className="profile-pic-large"
-                    src={user.photo || "https://i.pravatar.cc/40"}
-                    alt="profile"
+                    className="profile-pic"
+                    src={profilePic}
+                    alt={user.name}
                   />
-                  <p className="profile-name">{user.name}</p>
+                  <p className="profile-name">{user.name || "User"}</p>
                   <Link to="/profile" onClick={() => setProfileMenu(false)}>
                     See Profile
                   </Link>
@@ -77,8 +103,6 @@ export default function Navbar() {
               </Link>
             </>
           )}
-
-          {/* Always show Men / Women links */}
           <Link to="/salons?gender=man" onClick={() => setOpenMenu(false)}>
             Men
           </Link>

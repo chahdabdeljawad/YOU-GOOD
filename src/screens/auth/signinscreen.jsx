@@ -7,7 +7,7 @@ function Signin() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("man");
+  const [gender, setGender] = useState("");
   const [role, setRole] = useState("USER");
   const [photo, setPhoto] = useState(""); // <-- new state for profile picture
   const [error, setError] = useState("");

@@ -51,13 +51,6 @@
   font-size: 25px;
 }
 
-/* PROFILE */
-.profile-pic {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-}
-
 /* ===== DROPDOWN ===== */
 .dropdown {
   position: fixed;
@@ -91,29 +84,33 @@
 .profile-wrapper {
   position: relative;
   cursor: pointer;
+  z-index: 3000;
 }
 
 .profile-dropdown {
   position: absolute;
   top: 50px;
   right: 0;
-  background: #fff; /* same white theme */
-  border: 1px solid #eee;
+  background: #fcfafa; /* same white theme */
+  border: 1px solid #fdfbfb;
   padding: 16px 20px;
-  display: flex;
+  display: block;
+  opacity: 1;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  z-index: 300;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   width: 180px;
+  z-index: 5000;
 }
 
-.profile-pic-large {
-  width: 70px;
-  height: 70px;
+.profile-pic {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  object-fit: cover;
   border: 2px solid #111;
+  background: #0a0808;
 }
 
 .profile-name {
@@ -133,7 +130,7 @@
   width: 100%;
   padding: 6px 0;
   background: #010101;
-  color: #fff;
+  color: #844242;
   border: none;
   border-radius: 4px;
   cursor: pointer;

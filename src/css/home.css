@@ -1,8 +1,10 @@
 /* CENTER - Title under navbar */
 .nav-center {
-  position: relative;
-  padding: 60px 0 30px;
-  text-align: center;
+  display: flex; /* enable flexbox */
+  justify-content: center; /* center horizontally */
+  align-items: center; /* center vertically */
+  height: 1000px;
+  text-align: center; /* optional, good for multiple lines */
   background: #fff;
   font-size: 42px;
   letter-spacing: 6px;
