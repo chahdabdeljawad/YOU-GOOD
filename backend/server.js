@@ -1,29 +1,27 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import salonsRouter from "./routes/salons.js"; // only this one
+import salonRoutes from "./routes/salons.js";
+import pool from "./db.js";
 import authRoutes from "./routes/auth.js";
 import reservationsRouter from "./routes/reservations.js";
-import pool from "./db.js";
 
 dotenv.config();
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Salons API
-app.use("/api/salons", salonsRouter);
-
-// Auth API
-app.use("/api/auth", authRoutes);
-
-// Reservations API
-app.use("/api/reservations", reservationsRouter);
+app.use("/api", salonRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
+
+app.use("/api/auth", authRoutes);
+
+app.use("/api/reservations", reservationsRouter);
 
 // TEST DATABASE CONNECTION
 app.get("/test-db", async (req, res) => {

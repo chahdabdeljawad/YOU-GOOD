@@ -14,15 +14,29 @@ function ReservationScreen() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  // At the top of ReservationScreen, before the component
+  const maleCategories = [
+    { name: "Haircut", image: "/images/male/haircut.png" },
+    { name: "Shave", image: "/images/male/shave.png" },
+    { name: "Hair Color", image: "/images/male/haircolor.png" },
+  ];
+
+  const femaleCategories = [
+    { name: "Haircut", image: "/images/female/haircut.png" },
+    { name: "Manicure", image: "/images/female/manicure.png" },
+    { name: "Facial", image: "/images/female/facial.png" },
+  ];
 
   useEffect(() => {
     const fetchSalon = async () => {
+      console.log("Fetching salon with ID:", salonId); // debug
       try {
         const response = await fetch(
-          `http://localhost:5000/api/salons/${salonId}`
+          `http://localhost:5002/api/salons/${salonId}`
         );
         if (!response.ok) throw new Error("Salon not found");
         const data = await response.json();
+        console.log("Salon data:", data); // debug
         setSalon(data);
       } catch (err) {
         console.error(err);
@@ -37,7 +51,7 @@ function ReservationScreen() {
   if (loading) return <p>Loading salon details...</p>;
   if (!salon) return <p>Salon not found.</p>;
 
-  const categories = salon.categories || []; // [{name: 'Hair', image: 'url'}, ...]
+  const categories = salon.gender === "man" ? maleCategories : femaleCategories;
 
   const availableDates = ["2026-01-10", "2026-01-11", "2026-01-12"]; // example dates
   const availableTimes = ["10:00", "11:00", "12:00", "14:00", "15:00"]; // example times
@@ -45,7 +59,7 @@ function ReservationScreen() {
   // Handle reservation confirmation
   const handleConfirm = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/reservations", {
+      const response = await fetch("http://localhost:5002/api/reservations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

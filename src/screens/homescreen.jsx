@@ -3,10 +3,10 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import "../css/home.css";
 
-function Home() {
+function Home({ user, setUser }) {
   return (
     <div className="home-container">
-      <Navbar />
+      <Navbar user={user} setUser={setUser} />
 
       {/* Main content wrapper */}
       <main className="main-content">

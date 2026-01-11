@@ -1,87 +1,75 @@
-/* Signin.css */
-
-div {
+.auth-container {
+  display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  background: #fff;
+  padding-top: 70px;
 }
 
-form {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 40px 50px;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.auth-form {
+  background: #fff;
+  padding: 40px;
+  border: 1px solid #111;
   width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-h2 {
-  margin-bottom: 30px;
+.auth-form h2 {
   text-align: center;
-  font-weight: 700;
   font-size: 28px;
-  color: #111;
+  letter-spacing: 4px;
+  margin-bottom: 30px;
+  text-transform: uppercase;
 }
 
-label {
-  font-size: 20px;
-  color: #010101;
-  margin-bottom: 5px;
-  margin-top: 15px;
+.auth-form label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: 500;
 }
 
-input {
-  padding: 12px 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
+.auth-form input,
+.auth-form select,
+.auth-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #111;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
-input:focus {
-  border-color: #000;
-}
-
-button {
-  margin-top: 25px;
-  padding: 14px 0;
-  background-color: #000;
+.auth-form button {
+  width: 100%;
+  padding: 15px;
+  background: #111;
   color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 20px;
 }
 
-button:hover {
-  background-color: #333;
+.auth-form button:hover {
+  background: #333;
 }
 
-p {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #ff4d4f;
+.error {
+  color: red;
   text-align: center;
+  margin: 10px 0;
 }
 
-select {
-  padding: 12px 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
+.switch-form {
+  text-align: center;
+  margin-top: 20px;
 }
 
-select:focus {
-  border-color: #000;
+.switch-form a {
+  color: #111;
+  text-decoration: underline;
 }

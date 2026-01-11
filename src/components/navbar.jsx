@@ -2,25 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/navbar.css";
 
-export default function Navbar() {
-  const [openMenu, setOpenMenu] = useState(false); // Hamburger menu
-  const [profileMenu, setProfileMenu] = useState(false); // Profile dropdown
-  const [user, setUser] = useState(null);
+export default function Navbar({ user, setUser }) {
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
-
   const profileRef = useRef(null);
-
-  // Load user from localStorage
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (savedUser) setUser(savedUser);
-  }, []);
 
   // Close profile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
-        setProfileMenu(false);
+        setProfileOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -29,57 +21,66 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
-    setProfileMenu(false);
+    setProfileOpen(false);
     navigate("/login");
   };
 
-  const isLoggedIn = !!user;
-
-  // Fallback profile picture
-  const profilePic = user
-    ? user.photo || `https://i.pravatar.cc/40?u=${user.id}`
-    : "";
+  // Profile picture fallback
+  const profilePic = user?.photo
+    ? user.photo
+    : `https://i.pravatar.cc/150?u=${user?.id || "default"}`;
 
   return (
     <>
       <nav className="navbar">
-        {/* LEFT - Hamburger */}
+        {/* LEFT: Hamburger */}
         <div
           className="nav-left"
-          onClick={() => {
-            setOpenMenu(!openMenu);
-            setProfileMenu(false); // close profile menu
-          }}
+          onClick={() => setHamburgerOpen((prev) => !prev)}
         >
           <span></span>
           <span></span>
           <span></span>
         </div>
 
-        {/* RIGHT */}
-        <div className="nav-right">
-          <input className="search" placeholder="Search" />
+        {/* CENTER: Title/Logo - OPTIONAL, uncomment if you want it */}
+        {/* <div className="nav-center">
+          <Link to="/" style={{ textDecoration: 'none', color: '#111' }}>
+            YOU GOOD
+          </Link>
+        </div> */}
 
-          {isLoggedIn && (
+        {/* RIGHT: Search + Profile (only when logged in) */}
+        <div className="nav-right">
+          <input className="search" placeholder="Search..." />
+
+          {/* Only show profile dropdown when user is logged in */}
+          {user && (
             <div
               className="profile-wrapper"
               ref={profileRef}
-              onClick={() => setProfileMenu(!profileMenu)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setProfileOpen((prev) => !prev);
+              }}
             >
-              {/* Profile image */}
-              <img className="profile-pic" src={profilePic} alt={user.name} />
-
-              {/* Dropdown */}
-              {profileMenu && (
+              <img
+                src={profilePic}
+                alt={user.name || "User"}
+                className="profile-pic"
+              />
+              {profileOpen && (
                 <div className="profile-dropdown">
                   <img
-                    className="profile-pic"
                     src={profilePic}
-                    alt={user.name}
+                    alt={user.name || "User"}
+                    className="profile-pic-large"
                   />
-                  <p className="profile-name">{user.name || "User"}</p>
-                  <Link to="/profile" onClick={() => setProfileMenu(false)}>
+                  <p className="profile-name">{user.name}</p>
+                  <p className="profile-role">{user.role}</p>
+                  <Link to="/profile" onClick={() => setProfileOpen(false)}>
                     See Profile
                   </Link>
                   <button onClick={handleLogout}>Logout</button>
@@ -87,26 +88,51 @@ export default function Navbar() {
               )}
             </div>
           )}
+          {/* REMOVED: No Login/Sign Up links in top-right */}
         </div>
       </nav>
 
-      {/* Hamburger Dropdown */}
-      {openMenu && (
-        <div className="dropdown">
-          {!isLoggedIn && (
+      {/* Hamburger menu dropdown - this is where Login/Sign Up will appear */}
+      {hamburgerOpen && (
+        <div className="hamburger-dropdown">
+          <Link to="/" onClick={() => setHamburgerOpen(false)}>
+            Home
+          </Link>
+
+          {/* Show auth links only when NOT logged in */}
+          {!user ? (
             <>
-              <Link to="/login" onClick={() => setOpenMenu(false)}>
+              <Link to="/login" onClick={() => setHamburgerOpen(false)}>
                 Login
               </Link>
-              <Link to="/signin" onClick={() => setOpenMenu(false)}>
+              <Link to="/signin" onClick={() => setHamburgerOpen(false)}>
                 Sign Up
               </Link>
+              <Link
+                to="/register-salon"
+                onClick={() => setHamburgerOpen(false)}
+              >
+                Register Salon
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/profile" onClick={() => setHamburgerOpen(false)}>
+                Profile
+              </Link>
+              <button onClick={handleLogout} className="logout-btn-hamburger">
+                Logout
+              </button>
             </>
           )}
-          <Link to="/salons?gender=man" onClick={() => setOpenMenu(false)}>
+
+          <Link to="/salons?gender=man" onClick={() => setHamburgerOpen(false)}>
             Men
           </Link>
-          <Link to="/salons?gender=women" onClick={() => setOpenMenu(false)}>
+          <Link
+            to="/salons?gender=women"
+            onClick={() => setHamburgerOpen(false)}
+          >
             Women
           </Link>
         </div>

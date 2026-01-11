@@ -17,9 +17,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET SALON BY ID (NEW)
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
+  const id = Number(req.params.id); // convert string to integer
+  if (isNaN(id)) return res.status(400).json({ error: "Invalid salon ID" });
+
   try {
     const result = await pool.query("SELECT * FROM salons WHERE id = $1", [id]);
     if (result.rows.length === 0) {
