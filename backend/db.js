@@ -1,40 +1,25 @@
-import express from "express";
-import cors from "cors";
-import salonsRouter from "./routes/salons.js";
-import authRoutes from "./routes/auth.js";
-import reservationsRouter from "./routes/reservations.js";
-import pool from "./db.js";
+import pkg from "pg";
+import dotenv from "dotenv";
 
-const app = express();
+dotenv.config();
 
-app.use(cors());
-app.use(express.json());
+const { Pool } = pkg;
 
-// Salons API
-app.use("/api/salons", salonsRouter);
-
-// Auth API
-app.use("/api/auth", authRoutes);
-
-// Reservations API
-app.use("/api/reservations", reservationsRouter);
-
-app.get("/", (req, res) => {
-  res.send("Backend is running");
+const pool = new Pool({
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
-// TEST DATABASE CONNECTION
-app.get("/test-db", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({ success: true, time: result.rows[0] });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Database error");
+// Test connection
+pool.query("SELECT NOW()", (err, res) => {
+  if (err) {
+    console.error("Database connection error:", err);
+  } else {
+    console.log("✅ Database connected successfully");
   }
 });
 
-const PORT = 5002;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
-
-export default app;
+export default pool;
