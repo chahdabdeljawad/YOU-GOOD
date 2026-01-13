@@ -11,7 +11,7 @@ function Home({ user, setUser }) {
       {/* Main content wrapper */}
       <main className="main-content">
         {/* YOU GOOD Title - moved from navbar to here */}
-        <div className="nav-center">YOU GOOD</div>
+        <div className="nav-center">WELCOME TO YOU GOOD</div>
 
         {/* NEW COLLECTION */}
         <section className="section-title">

@@ -1,142 +1,71 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../css/navbar.css";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Offcanvas from "react-bootstrap/Offcanvas";
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar({ user, setUser }) {
-  const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+function OffcanvasExample() {
   const navigate = useNavigate();
-  const profileRef = useRef(null);
-
-  // Close profile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (profileRef.current && !profileRef.current.contains(e.target)) {
-        setProfileOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setUser(null);
-    setProfileOpen(false);
-    navigate("/login");
-  };
-
-  // Profile picture fallback
-  const profilePic = user?.photo
-    ? user.photo
-    : `https://i.pravatar.cc/150?u=${user?.id || "default"}`;
+  const expand = "xxl"; // only XXL version
 
   return (
-    <>
-      <nav className="navbar">
-        {/* LEFT: Hamburger */}
-        <div
-          className="nav-left"
-          onClick={() => setHamburgerOpen((prev) => !prev)}
+    <Navbar expand={expand} className="bg-body-tertiary mb-3">
+      <Container fluid>
+        <Navbar.Brand href="#">YOU GOOD</Navbar.Brand>
+
+        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+
+        <Navbar.Offcanvas
+          id={`offcanvasNavbar-expand-${expand}`}
+          aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+          placement="end"
         >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+              Menu
+            </Offcanvas.Title>
+          </Offcanvas.Header>
 
-        {/* CENTER: Title/Logo - OPTIONAL, uncomment if you want it */}
-        {/* <div className="nav-center">
-          <Link to="/" style={{ textDecoration: 'none', color: '#111' }}>
-            YOU GOOD
-          </Link>
-        </div> */}
+          <Offcanvas.Body>
+            <Nav className="justify-content-end flex-grow-1 pe-3">
+              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/footer">About</Nav.Link>
 
-        {/* RIGHT: Search + Profile (only when logged in) */}
-        <div className="nav-right">
-          <input className="search" placeholder="Search..." />
+              <NavDropdown title="Categories">
+                <NavDropdown.Item href="http://localhost:5173/salons?gender=man">
+                  Men
+                </NavDropdown.Item>
+                <NavDropdown.Item href="http://localhost:5173/salons?gender=women">
+                  Women
+                </NavDropdown.Item>
+              </NavDropdown>
 
-          {/* Only show profile dropdown when user is logged in */}
-          {user && (
-            <div
-              className="profile-wrapper"
-              ref={profileRef}
-              onClick={(e) => {
-                e.stopPropagation();
-                setProfileOpen((prev) => !prev);
-              }}
-            >
-              <img
-                src={profilePic}
-                alt={user.name || "User"}
-                className="profile-pic"
+              <NavDropdown title="connexion">
+                <NavDropdown.Item href="http://localhost:5173/admin-login">
+                  Admin
+                </NavDropdown.Item>
+                <NavDropdown.Item href="http://localhost:5173/Login">
+                  User
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+
+            <Form className="d-flex mt-3 mt-xxl-0">
+              <Form.Control
+                type="search"
+                placeholder="Search"
+                className="me-2"
               />
-              {profileOpen && (
-                <div className="profile-dropdown">
-                  <img
-                    src={profilePic}
-                    alt={user.name || "User"}
-                    className="profile-pic-large"
-                  />
-                  <p className="profile-name">{user.name}</p>
-                  <p className="profile-role">{user.role}</p>
-                  <Link to="/profile" onClick={() => setProfileOpen(false)}>
-                    See Profile
-                  </Link>
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
-              )}
-            </div>
-          )}
-          {/* REMOVED: No Login/Sign Up links in top-right */}
-        </div>
-      </nav>
-
-      {/* Hamburger menu dropdown - this is where Login/Sign Up will appear */}
-      {hamburgerOpen && (
-        <div className="hamburger-dropdown">
-          <Link to="/" onClick={() => setHamburgerOpen(false)}>
-            Home
-          </Link>
-
-          {/* Show auth links only when NOT logged in */}
-          {!user ? (
-            <>
-              <Link to="/login" onClick={() => setHamburgerOpen(false)}>
-                Login
-              </Link>
-              <Link to="/signin" onClick={() => setHamburgerOpen(false)}>
-                Sign Up
-              </Link>
-              <Link
-                to="/register-salon"
-                onClick={() => setHamburgerOpen(false)}
-              >
-                Register Salon
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link to="/profile" onClick={() => setHamburgerOpen(false)}>
-                Profile
-              </Link>
-              <button onClick={handleLogout} className="logout-btn-hamburger">
-                Logout
-              </button>
-            </>
-          )}
-
-          <Link to="/salons?gender=man" onClick={() => setHamburgerOpen(false)}>
-            Men
-          </Link>
-          <Link
-            to="/salons?gender=women"
-            onClick={() => setHamburgerOpen(false)}
-          >
-            Women
-          </Link>
-        </div>
-      )}
-    </>
+              <Button variant="outline-success">Search</Button>
+            </Form>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
+      </Container>
+    </Navbar>
   );
 }
+
+export default OffcanvasExample;

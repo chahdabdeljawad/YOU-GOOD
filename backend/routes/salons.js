@@ -33,4 +33,55 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Add this endpoint to your existing file
+
+// SEARCH SALONS
+router.get("/search", async (req, res) => {
+  const query = req.query.q || "";
+
+  if (!query.trim()) {
+    return res.json([]);
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM salons 
+       WHERE name ILIKE $1 
+       OR city ILIKE $1 
+       OR description ILIKE $1 
+       OR gender ILIKE $1 
+       ORDER BY rating DESC 
+       LIMIT 10`,
+      [`%${query}%`]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Search error:", err);
+    res.status(500).json({ error: "Search failed" });
+  }
+});
+
+// ALSO update the existing GET / endpoint to support search:
+router.get("/", async (req, res) => {
+  const gender = req.query.gender || "man";
+  const search = req.query.search || "";
+
+  try {
+    let query = "SELECT * FROM salons WHERE gender = $1";
+    let params = [gender];
+
+    if (search) {
+      query += " AND (name ILIKE $2 OR city ILIKE $2 OR description ILIKE $2)";
+      params.push(`%${search}%`);
+    }
+
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 export default router;

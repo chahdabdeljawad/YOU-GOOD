@@ -1,57 +1,30 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import pool from "./db.js";
-import salonsRouter from "./routes/salons.js";
-import authRoutes from "./routes/auth.js";
-import reservationsRouter from "./routes/reservations.js";
 
 dotenv.config();
 
 const app = express();
 
-// Fix CORS
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-
+// Middleware
+app.use(cors());
 app.use(express.json());
 
+// Import routes
+import authRoutes from "./routes/auth.js";
+import salonRoutes from "./routes/salons.js";
+import reservationRoutes from "./routes/reservations.js";
+import adminAuthRoutes from "./routes/adminAuth.js";
+import adminRoutes from "./routes/admin.js";
+
 // Routes
-app.use("/api/salons", salonsRouter);
 app.use("/api/auth", authRoutes);
-app.use("/api/reservations", reservationsRouter);
-
-// Home route
-app.get("/", (req, res) => {
-  res.send("✅ YOU GOOD Backend is running");
-});
-
-// Test database connection
-app.get("/test-db", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({ success: true, time: result.rows[0].now });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Test route for salons
-app.get("/test-salons", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM salons LIMIT 5");
-    res.json({ count: result.rows.length, salons: result.rows });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+app.use("/api/salons", salonRoutes);
+app.use("/api/reservations", reservationRoutes);
+app.use("/api/admin/auth", adminAuthRoutes);
+app.use("/api/admin", adminRoutes);
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
