@@ -72,8 +72,8 @@ function Signin({ setUser }) {
   };
 
   return (
-    <div>
-      <form onSubmit={SigninHandle}>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={SigninHandle}>
         <h2>Join YOU GOOD</h2>
 
         <label>First Name:</label>

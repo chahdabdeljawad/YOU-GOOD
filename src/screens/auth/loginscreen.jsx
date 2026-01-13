@@ -48,8 +48,8 @@ function Login({ setUser }) {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="auth-container">
+      <form className="auth-form" onSubmit={handleSubmit}>
         <h2>Welcome back to YOU GOOD</h2>
         <label>Email:</label>
         <input
