@@ -1,9 +1,9 @@
 import express from "express";
-import pool from "../db.js"; // your postgres pool
+import pool from "../db.js";
 
 const router = express.Router();
 
-// POST /api/reservations
+// CREATE RESERVATION
 router.post("/", async (req, res) => {
   const { salon_id, user_id, category, date, time } = req.body;
 
@@ -13,16 +13,22 @@ router.post("/", async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO reservations (salon_id, user_id, category, date, time) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      `
+      INSERT INTO reservations 
+      (salon_id, user_id, category, reservation_date, reservation_time, status)
+      VALUES ($1,$2,$3,$4,$5,'pending')
+      RETURNING *
+      `,
       [salon_id, user_id, category, date, time]
     );
 
-    res
-      .status(201)
-      .json({ message: "Reservation confirmed", reservation: result.rows[0] });
+    res.status(201).json({
+      message: "Reservation confirmed",
+      reservation: result.rows[0],
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    console.error("Reservation error:", err);
+    res.status(500).json({ error: "Failed to save reservation" });
   }
 });
 

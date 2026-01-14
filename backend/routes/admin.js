@@ -161,55 +161,47 @@ router.delete("/salons/:id", async (req, res) => {
   }
 });
 
-// Get all reservations
+// GET ALL RESERVATIONS (ADMIN)
 router.get("/reservations", async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT r.*, 
-             s.name as salon_name,
-             u.name as user_name,
-             u.email as user_email
+      SELECT 
+        r.id,
+        r.category,
+        r.reservation_date,
+        r.reservation_time,
+        r.status,
+        u.name AS user_name,
+        u.email AS user_email,
+        s.name AS salon_name
       FROM reservations r
-      LEFT JOIN salons s ON r.salon_id = s.id
-      LEFT JOIN users u ON r.user_id = u.id
+      JOIN users u ON r.user_id = u.id
+      JOIN salons s ON r.salon_id = s.id
       ORDER BY r.created_at DESC
     `);
+
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    console.error("Admin reservations error:", err);
+    res.status(500).json({ error: "Failed to fetch reservations" });
   }
 });
 
-// Update reservation status
+// UPDATE STATUS
 router.put("/reservations/:id", async (req, res) => {
-  const { id } = req.params;
   const { status } = req.body;
-
-  if (!status) {
-    return res.status(400).json({ error: "Status is required" });
-  }
+  const id = req.params.id;
 
   try {
     const result = await pool.query(
-      `UPDATE reservations 
-       SET status = $1 
-       WHERE id = $2 
-       RETURNING *`,
+      "UPDATE reservations SET status=$1 WHERE id=$2 RETURNING *",
       [status, id]
     );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Reservation not found" });
-    }
-
-    res.json({
-      message: "Reservation updated",
-      reservation: result.rows[0],
-    });
+    res.json({ message: "Status updated", reservation: result.rows[0] });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
+    console.error("Update status error:", err);
+    res.status(500).json({ error: "Failed to update status" });
   }
 });
 

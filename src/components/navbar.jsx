@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -5,16 +6,44 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
-function OffcanvasExample() {
+function OffcanvasExample({ user, setUser }) {
   const navigate = useNavigate();
-  const expand = "xxl"; // only XXL version
+  const location = useLocation();
+  const expand = "xxl";
+
+  // State for search input
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Handle search form submission
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to salons page with search query
+      navigate(`/salons?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery(""); // Clear search input
+    }
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/");
+  };
+
+  // Check if user is logged in
+  const isLoggedIn = !!user;
 
   return (
     <Navbar expand={expand} className="bg-body-tertiary mb-3">
       <Container fluid>
-        <Navbar.Brand href="#">YOU GOOD</Navbar.Brand>
+        <Navbar.Brand href="/" style={{ cursor: "pointer" }}>
+          YOU GOOD
+        </Navbar.Brand>
 
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
 
@@ -31,35 +60,71 @@ function OffcanvasExample() {
 
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/footer">About</Nav.Link>
+              <Nav.Link href="/" active={location.pathname === "/"}>
+                Home
+              </Nav.Link>
+              <Nav.Link href="/footer" active={location.pathname === "/footer"}>
+                About
+              </Nav.Link>
 
-              <NavDropdown title="Categories">
-                <NavDropdown.Item href="http://localhost:5173/salons?gender=man">
+              <NavDropdown title="Categories" id="categories-dropdown">
+                <NavDropdown.Item
+                  href="/salons?gender=man"
+                  active={location.search.includes("gender=man")}
+                >
                   Men
                 </NavDropdown.Item>
-                <NavDropdown.Item href="http://localhost:5173/salons?gender=women">
+                <NavDropdown.Item
+                  href="/salons?gender=women"
+                  active={location.search.includes("gender=women")}
+                >
                   Women
                 </NavDropdown.Item>
               </NavDropdown>
 
-              <NavDropdown title="connexion">
-                <NavDropdown.Item href="http://localhost:5173/admin-login">
-                  Admin
-                </NavDropdown.Item>
-                <NavDropdown.Item href="http://localhost:5173/Login">
-                  User
-                </NavDropdown.Item>
-              </NavDropdown>
+              {isLoggedIn ? (
+                <NavDropdown
+                  title={user.name || "Account"}
+                  id="account-dropdown"
+                >
+                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                  {user.role === "SALON" && (
+                    <NavDropdown.Item href={`/salon/${user.id}`}>
+                      My Salon
+                    </NavDropdown.Item>
+                  )}
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={handleLogout}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <NavDropdown title="Login" id="login-dropdown">
+                  <NavDropdown.Item href="/admin-login">Admin</NavDropdown.Item>
+                  <NavDropdown.Item href="/login"> User</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/signin">Sign Up</NavDropdown.Item>
+                </NavDropdown>
+              )}
             </Nav>
 
-            <Form className="d-flex mt-3 mt-xxl-0">
+            {/* Search Form */}
+            <Form className="d-flex mt-3 mt-xxl-0" onSubmit={handleSearch}>
               <Form.Control
                 type="search"
-                placeholder="Search"
+                placeholder="Search salons, cities..."
                 className="me-2"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                aria-label="Search"
               />
-              <Button variant="outline-success">Search</Button>
+              <Button
+                variant="outline-success"
+                type="submit"
+                disabled={!searchQuery.trim()}
+              >
+                search
+              </Button>
             </Form>
           </Offcanvas.Body>
         </Navbar.Offcanvas>

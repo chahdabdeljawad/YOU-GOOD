@@ -29,7 +29,7 @@ function Home({ user, setUser }) {
             alt="Slider 2"
           />
           <img
-            src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250"
+            src="https://images.pexels.com/photos/1027092/pexels-photo-1027092.jpeg"
             alt="Slider 3"
           />
         </section>
@@ -53,15 +53,15 @@ function Home({ user, setUser }) {
         {/* Slider 2 */}
         <section className="fade-slider">
           <img
-            src="https://images.unsplash.com/photo-1515377905703-c4788e51af15"
+            src="https://images.pexels.com/photos/3993292/pexels-photo-3993292.jpeg"
             alt="Slider 1"
           />
           <img
-            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9"
+            src="https://images.pexels.com/photos/3992874/pexels-photo-3992874.jpeg"
             alt="Slider 2"
           />
           <img
-            src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250"
+            src="https://images.pexels.com/photos/1319459/pexels-photo-1319459.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt="Slider 3"
           />
         </section>

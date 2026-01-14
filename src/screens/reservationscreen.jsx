@@ -4,7 +4,7 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import "../css/reservation.css";
 
-function ReservationScreen() {
+function ReservationScreen({ user }) {
   const { salonId } = useParams();
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ function ReservationScreen() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           salon_id: salon.id,
-          user_id: 1, // TODO: replace with actual logged-in user ID
+          user_id: user.id, // TODO: replace with actual logged-in user ID
           category: selectedCategory,
           date: selectedDate,
           time: selectedTime,

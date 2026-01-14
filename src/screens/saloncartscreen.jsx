@@ -8,7 +8,7 @@ import "../css/saloncartscreen.css";
 function SalonCartScreen({ user, setUser }) {
   const [searchParams] = useSearchParams();
   const gender = searchParams.get("gender") || "man";
-  const search = searchParams.get("search") || "";
+  const search = searchParams.get("search") || ""; // ✅ this is your search query
 
   const [salons, setSalons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ function SalonCartScreen({ user, setUser }) {
     const fetchSalons = async () => {
       try {
         setLoading(true);
+        // Use `search` instead of undefined `searchTerm`
         let url = `http://localhost:5002/api/salons?gender=${gender}`;
         if (search) {
           url += `&search=${encodeURIComponent(search)}`;
@@ -34,6 +35,7 @@ function SalonCartScreen({ user, setUser }) {
       }
     };
 
+    // ✅ use `search` as dependency, not searchTerm
     fetchSalons();
   }, [gender, search]);
 
