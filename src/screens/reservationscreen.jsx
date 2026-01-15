@@ -85,7 +85,6 @@ function ReservationScreen({ user }) {
 
   return (
     <>
-      <Navbar />
       <main className="reservation-page">
         {/* Salon Info */}
         <div className="salon-info">
@@ -174,7 +173,6 @@ function ReservationScreen({ user }) {
           </div>
         )}
       </main>
-      <Footer />
     </>
   );
 }

@@ -1,33 +1,64 @@
-import Card from "react-bootstrap/Card";
+import "../css/footer.css";
 
-function BgColorExample() {
+const Footer = () => {
   return (
-    <>
-      {["beige"].map((variant) => (
-        <Card
-          bg={variant.toLowerCase()}
-          key={variant}
-          text={variant.toLowerCase() === "light" ? "dark" : "black"}
-          style={{ width: "100%", marginTop: "20px" }}
-          className="mb-2"
-        >
-          <Card.Header>About us</Card.Header>
-          <Card.Body>
-            <Card.Title>About us </Card.Title>
-            <Card.Text>
-              YOU GOOD is your go-to platform for booking salon appointments
-              with ease. Whether you're looking for a trendy haircut, a relaxing
-              spa treatment, or a stylish makeover, YOU GOOD connects you with
-              top-rated salons in your area. Our user-friendly interface allows
-            </Card.Text>
-            <Card.Text>instagram: @you_good_official</Card.Text>
-            <Card.Text>email: yougood@gmail.com</Card.Text>
-            <Card.Text>phone: +1 234 567 890</Card.Text>
-          </Card.Body>
-        </Card>
-      ))}
-    </>
-  );
-}
+    <footer className="footer">
+      <div className="footer-container">
+        {/* Column 1 */}
+        <div className="footer-column">
+          <h4>YOU-GOU</h4>
+          <ul>
+            <li>
+              <a href="#">About Us</a>
+            </li>
+            <li>
+              <a href="#">Find a Salon</a>
+            </li>
+            <li>
+              <a href="#">Become a Partner</a>
+            </li>
+            <li>
+              <a href="#">Support</a>
+            </li>
+          </ul>
+        </div>
 
-export default BgColorExample;
+        {/* Column 2 */}
+        <div className="footer-column">
+          <h4>Community</h4>
+          <ul>
+            <li>
+              <a href="#">Salon Owners</a>
+            </li>
+            <li>
+              <a href="#">Customers</a>
+            </li>
+            <li>
+              <a href="#">Help Center</a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 3 */}
+        <div className="footer-column">
+          <h4>More</h4>
+          <ul>
+            <li>
+              <a href="#">Instagram</a>
+            </li>
+            <li>
+              <a href="#">Facebook</a>
+            </li>
+            <li>
+              <a href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="footer-bottom">© 2025 YOU-GOU. All rights reserved.</div>
+    </footer>
+  );
+};
+
+export default Footer;

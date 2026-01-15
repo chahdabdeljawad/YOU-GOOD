@@ -9,6 +9,9 @@ import SalonCartScreen from "./screens/saloncartscreen";
 import ReservationScreen from "./screens/reservationscreen";
 import AdminScreen from "./screens/AdminScreen";
 import AdminLogin from "./screens/auth/AdminLogin";
+import About from "./screens/about";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -23,6 +26,8 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar user={user} setUser={setUser} />
+
       <Routes>
         <Route path="/" element={<Home user={user} setUser={setUser} />} />
         <Route path="/login" element={<Login setUser={setUser} />} />
@@ -45,15 +50,16 @@ function App() {
           element={<ReservationScreen user={user} setUser={setUser} />}
         />
 
-        {/* Protected Admin Route */}
         <Route
           path="/admin"
           element={admin ? <AdminScreen /> : <Navigate to="/admin-login" />}
         />
 
-        {/* Redirect to home for unknown routes */}
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+
+      <Footer />
     </BrowserRouter>
   );
 }

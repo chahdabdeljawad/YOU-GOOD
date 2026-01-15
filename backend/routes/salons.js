@@ -6,19 +6,30 @@ const router = express.Router();
 /*
   GET /api/salons
   Supports:
-  - ?gender=man|woman
+  - ?gender=man|woman (optional)
   - ?search=text
 */
 router.get("/", async (req, res) => {
-  const gender = req.query.gender || "man";
+  const gender = req.query.gender;
   const search = req.query.search || "";
 
   try {
-    let query = "SELECT * FROM salons WHERE gender = $1";
-    let params = [gender];
+    let query = "SELECT * FROM salons WHERE 1=1";
+    let params = [];
+    let paramCount = 0;
 
-    if (search) {
-      query += " AND (name ILIKE $2 OR city ILIKE $2 OR description ILIKE $2)";
+    // Add gender filter ONLY if there's NO search term
+    // When searching, show results from all genders
+    if (gender && !search.trim()) {
+      paramCount++;
+      query += ` AND gender = $${paramCount}`;
+      params.push(gender);
+    }
+
+    // Add search filter if provided
+    if (search.trim()) {
+      paramCount++;
+      query += ` AND (name ILIKE $${paramCount} OR city ILIKE $${paramCount} OR description ILIKE $${paramCount})`;
       params.push(`%${search}%`);
     }
 
@@ -30,6 +41,33 @@ router.get("/", async (req, res) => {
   }
 });
 
+/*
+  GET /api/salons/search
+  Search across all salons (no gender filter)
+*/
+router.get("/search", async (req, res) => {
+  const search = req.query.q || "";
+  const limit = parseInt(req.query.limit) || 20;
+
+  try {
+    let query = "SELECT * FROM salons";
+    let params = [];
+
+    if (search.trim()) {
+      query += ` WHERE (name ILIKE $1 OR city ILIKE $1 OR description ILIKE $1)`;
+      params.push(`%${search}%`);
+    }
+
+    query += ` LIMIT $${params.length + 1}`;
+    params.push(limit);
+
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Search error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 /*
   GET /api/salons/:id
 */
@@ -66,6 +104,36 @@ router.post("/", async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error("Salon create error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// In salons.js - Add this route
+router.get("/search/instant", async (req, res) => {
+  const search = req.query.q || "";
+  const limit = parseInt(req.query.limit) || 5;
+
+  if (search.trim().length < 2) {
+    return res.json([]);
+  }
+
+  try {
+    // In GET /api/salons/search/instant route:
+    const result = await pool.query(
+      `SELECT DISTINCT s.* 
+   FROM salons s
+   LEFT JOIN services sv ON s.id = sv.salon_id
+   WHERE (s.name ILIKE $1 
+          OR s.city ILIKE $1 
+          OR s.description ILIKE $1
+          OR sv.service_name ILIKE $1
+          OR sv.description ILIKE $1)
+   LIMIT $2`,
+      [`%${search}%`, limit]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error("Instant search error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });

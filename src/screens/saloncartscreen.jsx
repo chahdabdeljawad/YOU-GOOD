@@ -17,25 +17,26 @@ function SalonCartScreen({ user, setUser }) {
     const fetchSalons = async () => {
       try {
         setLoading(true);
-        // Use `search` instead of undefined `searchTerm`
+        console.log("Search params:", { gender, search }); // Debug log
+
         let url = `http://localhost:5002/api/salons?gender=${gender}`;
         if (search) {
           url += `&search=${encodeURIComponent(search)}`;
         }
 
-        console.log("Fetching from:", url); // Debug
+        console.log("Fetching from URL:", url); // Debug log
 
         const response = await fetch(url);
         const data = await response.json();
+        console.log("API Response:", data); // Debug log
         setSalons(data);
       } catch (err) {
-        console.error(err);
+        console.error("Fetch error:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    // ✅ use `search` as dependency, not searchTerm
     fetchSalons();
   }, [gender, search]);
 
@@ -43,8 +44,6 @@ function SalonCartScreen({ user, setUser }) {
 
   return (
     <>
-      <Navbar user={user} setUser={setUser} />
-
       <main className="salon-page">
         <h2 className="salon-title">
           {gender === "man" ? "MEN SALONS" : "WOMEN SALONS"}
@@ -83,7 +82,6 @@ function SalonCartScreen({ user, setUser }) {
           ))}
         </div>
       </main>
-      <Footer />
     </>
   );
 }

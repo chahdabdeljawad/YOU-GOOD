@@ -203,7 +203,6 @@ function AdminScreen() {
 
   return (
     <>
-      <Navbar />
       <div className="admin-container">
         <div className="admin-header">
           <h1>Admin Dashboard</h1>
@@ -453,7 +452,6 @@ function AdminScreen() {
           </div>
         )}
       </div>
-      <Footer />
     </>
   );
 }

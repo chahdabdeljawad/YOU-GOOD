@@ -21,9 +21,20 @@ function OffcanvasExample({ user, setUser }) {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to salons page with search query
-      navigate(`/salons?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery(""); // Clear search input
+      // Get current gender from URL or use empty (search all)
+      const currentGender = location.search.includes("gender=women")
+        ? "women"
+        : location.search.includes("gender=man")
+        ? "man"
+        : "";
+
+      let url = `/salons?search=${encodeURIComponent(searchQuery.trim())}`;
+      if (currentGender) {
+        url += `&gender=${currentGender}`;
+      }
+
+      navigate(url);
+      setSearchQuery("");
     }
   };
 
@@ -63,7 +74,7 @@ function OffcanvasExample({ user, setUser }) {
               <Nav.Link href="/" active={location.pathname === "/"}>
                 Home
               </Nav.Link>
-              <Nav.Link href="/footer" active={location.pathname === "/footer"}>
+              <Nav.Link href="/About" active={location.pathname === "/About"}>
                 About
               </Nav.Link>
 

@@ -10,6 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Debug middleware (optional)
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 // Import routes
 import authRoutes from "./routes/auth.js";
 import salonRoutes from "./routes/salons.js";
@@ -23,6 +29,17 @@ app.use("/api/salons", salonRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/admin/auth", adminAuthRoutes);
 app.use("/api/admin", adminRoutes);
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: "Something went wrong!" });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
